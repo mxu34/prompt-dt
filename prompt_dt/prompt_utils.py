@@ -422,7 +422,7 @@ def process_info(env_name_list, trajectories_list, info, mode, dataset, pct_traj
         info[env_name]['p_sample'] = p_sample
         info[env_name]['state_mean'] = state_mean
         info[env_name]['state_std'] = state_std
-        if variant['avarage_state_mean']:
+        if variant['average_state_mean']:
             info[env_name]['state_mean'] = variant['total_state_mean']
             info[env_name]['state_std'] = variant['total_state_std']
     return info

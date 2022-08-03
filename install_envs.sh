@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd envs
 cd metaworld
 pip install -e .

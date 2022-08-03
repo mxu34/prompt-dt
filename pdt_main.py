@@ -25,7 +25,7 @@ def experiment_mix_env(
         exp_prefix,
         variant,
 ):
-    device = variant.get('device', 'cuda')
+    device = variant['device']
     log_to_wandb = variant['log_to_wandb']
 
     ######
@@ -35,19 +35,17 @@ def experiment_mix_env(
     cur_dir = os.getcwd()
     config_save_path = os.path.join(cur_dir, 'config')
     data_save_path = os.path.join(cur_dir, 'data')
-    par_dir = os.path.dirname(cur_dir) 
     save_path = os.path.join(cur_dir, 'model_saved/')
-    isExist = os.path.exists(save_path)
-    if not isExist: os.mkdir(save_path)
+    if not os.path.exists(save_path): os.mkdir(save_path)
 
     config_path_dict = {
-        'cheetah_vel': "/cheetah_vel/cheetah_vel_40.json",
-        'cheetah_dir': "/cheetah_dir/cheetah_dir_2.json",
-        'ant_dir': "/ant_dir/ant_dir_50.json",
-        'ML1-pick-place-v2': "/ML1-pick-place-v2/ML1_pick_place.json",
+        'cheetah_vel': "cheetah_vel/cheetah_vel_40.json",
+        'cheetah_dir': "cheetah_dir/cheetah_dir_2.json",
+        'ant_dir': "ant_dir/ant_dir_50.json",
+        'ML1-pick-place-v2': "ML1-pick-place-v2/ML1_pick_place.json",
     }
     
-    task_config=config_save_path+config_path_dict[args.env]
+    task_config = os.path.join(config_save_path, config_path_dict[args.env])
     with open(task_config, 'r') as f:
         task_config = json.load(f, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
     train_env_name_list, test_env_name_list = [], []
@@ -60,14 +58,14 @@ def experiment_mix_env(
     # testing envs
     test_info, test_env_list = get_env_list(test_env_name_list, config_save_path, device)
 
-
+    print(f'Env Info: {info} \n\n Test Env Info: {test_info}\n\n\n')
+    print(f'Env List: {env_list} \n\n Test Env List: {test_env_list}')
     ######
     # process train and test datasets
     ######
 
     K = variant['K']
     batch_size = variant['batch_size']
-    num_eval_episodes = variant['num_eval_episodes']
     pct_traj = variant.get('pct_traj', 1.)
     mode = variant.get('mode', 'normal')
     dataset_mode = variant['dataset_mode']
@@ -81,7 +79,7 @@ def experiment_mix_env(
     test_trajectories_list, test_prompt_trajectories_list = load_data_prompt(test_env_name_list, data_save_path, test_dataset_mode, test_prompt_mode, args)
 
     # change to total train trajecotry 
-    if variant['avarage_state_mean']:
+    if variant['average_state_mean']:
         train_total = list(itertools.chain.from_iterable(trajectories_list))
         test_total = list(itertools.chain.from_iterable(test_trajectories_list))
         total_traj_list = train_total + test_total
@@ -89,9 +87,6 @@ def experiment_mix_env(
         total_state_mean, total_state_std= process_total_data_mean(total_traj_list, mode)
         variant['total_state_mean'] = total_state_mean
         variant['total_state_std'] = total_state_std
-
-        print('total_state_mean', total_state_mean)
-        print('total_state_std', total_state_std)
 
     # process train info
     info = process_info(train_env_name_list, trajectories_list, info, mode, dataset_mode, pct_traj, variant)
@@ -256,7 +251,7 @@ if __name__ == '__main__':
     parser.add_argument('--finetune_opt', action='store_true', default=True)
     parser.add_argument('--finetune_lr', type=float, default=1e-4)
     parser.add_argument('--no_state_normalize', action='store_true', default=False) 
-    parser.add_argument('--avarage_state_mean', action='store_true', default=True) 
+    parser.add_argument('--average_state_mean', action='store_true', default=True) 
     parser.add_argument('--evaluation', action='store_true', default=False) 
     parser.add_argument('--render', action='store_true', default=False) 
     parser.add_argument('--load-path', type=str, default= None) # choose a model when in evaluation mode

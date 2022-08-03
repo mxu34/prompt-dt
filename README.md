@@ -9,30 +9,36 @@ Prompt-DT Architecture:
 
 ## Installation
 
-We tested the code in Ubuntu 20.04. We recommend using Anaconda to create a virtual environment with the following commands.
+We tested the code in Ubuntu 20.04. 
+ - We recommend using Anaconda to create a virtual environment.
 
 ```
 conda create --name prompt-dt python=3.8.5
 conda activate prompt-dt
 ```
-Our experiments require MuJoCo as well as mujoco-py. Install them by following the instructions in the [mujoco-py repo](https://github.com/openai/mujoco-py).
+ - Our experiments require MuJoCo as well as mujoco-py. Install them by following the instructions in the [mujoco-py repo](https://github.com/openai/mujoco-py).
 
-We build environments based on repos including [macaw](https://github.com/eric-mitchell/macaw), [rand_param_envs](https://github.com/dennisl88/rand_param_envs), and [metaworld](https://github.com/rlworkgroup/metaworld).
-Install environments and dependencies with the following commands:
+ - Install environments and dependencies with the following commands:
 
 ```
 # install dependencies
 pip install -r requirements.txt
 
 # install environments
-chmod +x install_envs.sh
 ./install_envs.sh
 ```
-We log experiments with [wandb](https://wandb.ai/site?utm_source=google&utm_medium=cpc&utm_campaign=Performance-Max&utm_content=site&gclid=CjwKCAjwlqOXBhBqEiwA-hhitGcG5-wtdqoNgKyWdNpsRedsbEYyK9NeKcu8RFym6h8IatTjLFYliBoCbikQAvD_BwE). Check the [wandb quickstart doc](https://docs.wandb.ai/quickstart) to create an account.
+ - We log experiments with [wandb](https://wandb.ai/site?utm_source=google&utm_medium=cpc&utm_campaign=Performance-Max&utm_content=site&gclid=CjwKCAjwlqOXBhBqEiwA-hhitGcG5-wtdqoNgKyWdNpsRedsbEYyK9NeKcu8RFym6h8IatTjLFYliBoCbikQAvD_BwE). Check out the [wandb quickstart doc](https://docs.wandb.ai/quickstart) to create an account.
 
 ## Download Datasets
  - We share example datasets via this [Google Drive link](https://drive.google.com/drive/folders/1six767uD8yfdgoGIYW86sJY-fmMdYq7e?usp=sharing).
- - Download the "data" folder and organize folders as follows.
+ - Download the "data" folder.
+
+```
+wget -O data.zip 'https://drive.google.com/uc?export=download&id=1rZufm-XRq1Ig-56DejkQUX1si_WzCGBe&confirm=True' 
+unzip data.zip
+rm data.zip
+```
+ - Organize folders as follows.
 ```
 .
 ├── config
@@ -60,6 +66,8 @@ python pdt_main.py --no-prompt
 python pdt_main.py --no-prompt --no-rtg --no-r --finetune
 ```
 
+## Acknowledgements
+The code for prompt-dt is based on [decision-transformer](https://github.com/kzl/decision-transformer). We build environments based on repos including [macaw](https://github.com/eric-mitchell/macaw), [rand_param_envs](https://github.com/dennisl88/rand_param_envs), and [metaworld](https://github.com/rlworkgroup/metaworld).
 
 ## References
 If you find our code helpful for your research, please consider citing the paper!

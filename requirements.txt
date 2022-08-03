@@ -1,0 +1,9 @@
+gym==0.18.3
+numpy==1.20.3
+torch==1.10.0
+transformers==4.5.1
+wandb==0.9.1
+mujoco-py==2.0.2.13
+pygame==2.1.0
+pytest==6.2.5
+matplotlib==3.5.1
